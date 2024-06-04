@@ -9,3 +9,4 @@ yarn.lock
 # macOS
 .DS_Store
 .vercel
+/prisma/.database
