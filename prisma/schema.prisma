@@ -11,9 +11,10 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  email    String @unique
+  id       String    @id @default(cuid())
+  email    String    @unique
   password String
+  workouts Workout[]
 }
 
 model BodyPart {
@@ -30,17 +31,11 @@ model Exercise {
   workouts   Workout[]
 }
 
-model Student {
-  id       Int       @id @default(autoincrement())
-  name     String
-  workouts Workout[]
-}
-
 model Workout {
   id         Int      @id @default(autoincrement())
-  student    Student  @relation(fields: [studentId], references: [id])
-  studentId  Int
   exercise   Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId Int
   createdAt  DateTime @default(now())
+  User       User?    @relation(fields: [userId], references: [id])
+  userId     String?
 }

@@ -16,6 +16,7 @@ import { registerUser } from './routes/Auth/registerUser'
 
 import { exercisesByBodyPart } from './routes/Exercises/exercisesByBodyPart'
 import { getAllExercises } from './routes/Exercises/getAllExercises'
+import { createWorkout } from './routes/Workout/createForm'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -53,6 +54,8 @@ app.register(loginUser)
 
 app.register(getAllExercises)
 app.register(exercisesByBodyPart)
+
+app.register(createWorkout)
 
 app.listen({ port: 3100, host: '0.0.0.0' }).then(() => {
   console.log('Server is running on port 3100')

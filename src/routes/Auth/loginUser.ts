@@ -16,6 +16,7 @@ export async function loginUser(app: FastifyInstance) {
     },
     async (request, reply) => {
       const { email, password } = request.body
+      console.log('req body', request.body)
 
       const user = await prisma.user.findFirst({
         where: {
