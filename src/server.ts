@@ -16,7 +16,7 @@ import { registerUser } from './routes/Auth/registerUser'
 
 import { exercisesByBodyPart } from './routes/Exercises/exercisesByBodyPart'
 import { getAllExercises } from './routes/Exercises/getAllExercises'
-import { createWorkout } from './routes/Workout/createForm'
+import { createWorkout } from './routes/Workout/createWorkout'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 

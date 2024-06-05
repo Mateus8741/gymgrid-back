@@ -15,5 +15,4 @@ prisma/.env
 prisma/.env.development
 prisma/.env.production
 prisma/.env.test
-prisma/migrations
 prisma/database/
