@@ -16,7 +16,6 @@ export async function loginUser(app: FastifyInstance) {
     },
     async (request, reply) => {
       const { email, password } = request.body
-      console.log('req body', request.body)
 
       const user = await prisma.user.findFirst({
         where: {
@@ -40,11 +39,14 @@ export async function loginUser(app: FastifyInstance) {
         }
       }
 
-      const token = await reply.jwtSign({
-        sign: {
+      const token = await reply.jwtSign(
+        {
           sub: user.id,
         },
-      })
+        {
+          expiresIn: '7d',
+        },
+      )
 
       return reply.send({
         token,
