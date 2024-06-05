@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { prisma } from '../prisma/prisma-client'
-import { RegisterSchema } from '../schema/RegisterSchema'
+import { prisma } from '../../prisma/prisma-client'
+import { RegisterSchema } from '../../schema/RegisterSchema'
 
 export async function registerUser(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(

@@ -15,3 +15,16 @@ model User {
   email    String @unique
   password String
 }
+
+model BodyPart {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  exercises Exercise[]
+}
+
+model Exercise {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  bodyPart   BodyPart @relation(fields: [bodyPartId], references: [id])
+  bodyPartId Int
+}

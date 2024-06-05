@@ -11,8 +11,11 @@ import {
     serializerCompiler,
     validatorCompiler,
 } from 'fastify-type-provider-zod'
-import { loginUser } from './routes/loginUser'
-import { registerUser } from './routes/registerUser'
+import { loginUser } from './routes/Auth/loginUser'
+import { registerUser } from './routes/Auth/registerUser'
+
+import { exercisesByBodyPart } from './routes/Exercises/exercisesByBodyPart'
+import { getAllExercises } from './routes/Exercises/getAllExercises'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -47,6 +50,9 @@ app.setSerializerCompiler(serializerCompiler)
 
 app.register(registerUser)
 app.register(loginUser)
+
+app.register(getAllExercises)
+app.register(exercisesByBodyPart)
 
 app.listen({ port: 3100, host: '0.0.0.0' }).then(() => {
   console.log('Server is running on port 3100')
