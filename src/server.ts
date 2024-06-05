@@ -6,17 +6,19 @@ import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import { fastify } from 'fastify'
 import {
-    ZodTypeProvider,
-    jsonSchemaTransform,
-    serializerCompiler,
-    validatorCompiler,
+  ZodTypeProvider,
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
 } from 'fastify-type-provider-zod'
 import { loginUser } from './routes/Auth/loginUser'
 import { registerUser } from './routes/Auth/registerUser'
 
+import { auth } from './middleware/verify-jwt'
 import { exercisesByBodyPart } from './routes/Exercises/exercisesByBodyPart'
 import { getAllExercises } from './routes/Exercises/getAllExercises'
 import { createWorkout } from './routes/Workout/createWorkout'
+import { getWorkouts } from './routes/Workout/getAllWorkout'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -48,6 +50,7 @@ app.register(fastifySwaggerUi, {
 
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
+app.register(auth)
 
 app.register(registerUser)
 app.register(loginUser)
@@ -56,6 +59,7 @@ app.register(getAllExercises)
 app.register(exercisesByBodyPart)
 
 app.register(createWorkout)
+app.register(getWorkouts)
 
 app.listen({ port: 3100, host: '0.0.0.0' }).then(() => {
   console.log('Server is running on port 3100')
