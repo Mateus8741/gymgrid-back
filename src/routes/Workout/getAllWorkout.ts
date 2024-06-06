@@ -1,31 +1,3 @@
-// import { FastifyInstance } from 'fastify'
-// import { prisma } from '../../prisma/prisma-client'
-
-// export async function getAllWorkout(app: FastifyInstance) {
-//   app.get(
-//     '/workout',
-//     {
-//       schema: {
-//         summary: 'Get all workouts',
-//         tags: ['Workout'],
-//       },
-//     },
-//     async (request, reply) => {
-//       const workouts = await prisma.workout.findMany({
-//         include: {
-//           exercise: {
-//             include: {
-//               bodyPart: true,
-//             },
-//           },
-//         },
-//       })
-
-//       return reply.send({ workouts })
-//     },
-//   )
-// }
-
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { prisma } from '../../prisma/prisma-client'
@@ -54,34 +26,21 @@ export async function getWorkouts(app: FastifyInstance) {
           },
         })
 
-        const groupedWorkouts: {
-          [key: string]: {
-            workoutId: number
-            exerciseId: number
-            exerciseName: string
-            createdAt: Date
-          }[]
-        } = {}
-
-        workouts.forEach((workout) => {
-          const bodyPartName = workout.exercise.bodyPart.name
-          if (!groupedWorkouts[bodyPartName]) {
-            groupedWorkouts[bodyPartName] = []
-          }
-          groupedWorkouts[bodyPartName].push({
-            workoutId: workout.id,
-            exerciseId: workout.exercise.id,
-            exerciseName: workout.exercise.name,
-            createdAt: workout.createdAt,
-          })
+        reply.status(200).send({
+          workouts: workouts.map((workout) => {
+            return {
+              id: workout.id,
+              exerciseId: workout.exerciseId,
+              createdAt: workout.createdAt,
+              userId: workout.userId,
+              exercise: {
+                name: workout.exercise.name,
+                bodyPartId: workout.exercise.bodyPartId,
+                bodyPartName: workout.exercise.bodyPart.name,
+              },
+            }
+          }),
         })
-
-        const response = Object.keys(groupedWorkouts).map((bodyPartName) => ({
-          bodyPart: bodyPartName,
-          exercises: groupedWorkouts[bodyPartName],
-        }))
-
-        reply.status(200).send({ workouts: response })
       } catch (error) {
         console.error('Error fetching workouts:', error)
         reply.status(500).send({ error: 'Internal server error' })
